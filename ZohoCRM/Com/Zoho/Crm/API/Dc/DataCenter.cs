@@ -152,6 +152,18 @@ namespace Com.Zoho.Crm.API.Dc
                 }
                 return CADataCenter.PRODUCTION;
             }
+            else if (Constants.SA_DATACENTER.Any(a => a.Equals(config)))
+            {
+                if (config.Contains(Constants.SANDBOX))
+                {
+                    return SADataCenter.SANDBOX;
+                }
+                else if (config.Contains(Constants.DEVELOPER))
+                {
+                    return SADataCenter.DEVELOPER;
+                }
+                return SADataCenter.PRODUCTION;
+            }
             return null;
 	    }
     }

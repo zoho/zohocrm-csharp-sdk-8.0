@@ -10,6 +10,7 @@ namespace Com.Zoho.Crm.API.Modules
 		private long? id;
 		private string moduleName;
 		private string module;
+		private bool? crypt;
 		private Dictionary<string, int?> keyModified=new Dictionary<string, int?>();
 
 		public string APIName
@@ -88,6 +89,26 @@ namespace Com.Zoho.Crm.API.Modules
 				 this.module=value;
 
 				 this.keyModified["module"] = 1;
+
+			}
+		}
+
+		public bool? Crypt
+		{
+			/// <summary>The method to get the crypt</summary>
+			/// <returns>bool? representing the crypt</returns>
+			get
+			{
+				return  this.crypt;
+
+			}
+			/// <summary>The method to set the value to crypt</summary>
+			/// <param name="crypt">bool?</param>
+			set
+			{
+				 this.crypt=value;
+
+				 this.keyModified["crypt"] = 1;
 
 			}
 		}

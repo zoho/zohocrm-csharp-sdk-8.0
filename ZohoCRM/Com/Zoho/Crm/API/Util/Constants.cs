@@ -443,6 +443,7 @@ namespace Com.Zoho.Crm.API.Util
         public static readonly List<string> JP_DATACENTER = new List<string>() { "https://www.zohoapis.jp", "https://sandbox.zohoapis.jp", "https://developer.zohoapis.jp", "https://accounts.zoho.jp/oauth/v2/token", "jp" };
         public static readonly List<string> US_DATACENTER = new List<string>() { "https://www.zohoapis.com", "https://sandbox.zohoapis.com", "https://developer.zohoapis.com", "https://accounts.zoho.com/oauth/v2/token", "us" };
         public static readonly List<string>  CA_DATACENTER = new List<string>() { "https://www.zohoapis.ca", "https://sandbox.zohoapis.ca", "https://developer.zohoapis.ca", "https://accounts.zohocloud.ca/oauth/v2/token", "ca" };
+        public static readonly List<string> SA_DATACENTER = new List<string>() { "https://www.zohoapis.sa", "https://sandbox.zohoapis.sa", "https://developer.zohoapis.sa", "https://accounts.zoho.sa/oauth/v2/token", "sa" };
         public static readonly string SANDBOX = "sandbox";
         public static readonly string DEVELOPER = "developer";
 	    public static readonly string API_DOMAIN = "api_domain";

@@ -937,7 +937,7 @@ namespace Com.Zoho.Crm.API.Util
             string[] fieldAPINamesInteger = new string[] { "integer" };
             string[] fieldAPINamesBoolean = new string[] { "boolean" };
             string[] fieldAPINamesLong = new string[] { "long", "bigint" };
-            string[] fieldAPINamesDouble = new string[] { "double", "percent", "lookup", "currency" };
+            string[] fieldAPINamesDouble = new string[] { "double", "percent", "currency" };
             string[] fieldAPINamesFieldFile = new string[] { "fileupload" };
             string[] fieldAPINamesDateTime = new string[] { "datetime", "event_reminder" };
             string[] fieldAPINamesDate = new string[] { "date" };
