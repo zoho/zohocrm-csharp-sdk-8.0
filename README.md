@@ -25,6 +25,10 @@ License
 
 ## Latest Version
 
+- [2.0.0](/versions/2.0.0/README.md)
+    - New fields have been added to the History Tracking Fields API. 
+    - Fixed the issue with the inventory mass conversion status API.
+
 - [1.0.0](/versions/1.0.0/README.md)
 
     - C# SDK upgraded to support v8 APIs.
@@ -55,7 +59,7 @@ You can include the SDK to your project using:
     - Package Manager
 
         ```sh
-        Install-Package ZOHOCRMSDK-8.0 -Version 1.0.0
+        Install-Package ZOHOCRMSDK-8.0 -Version 2.0.0
         Install-Package MySql.Data -Version 6.9.12
         Install-Package Newtonsoft.Json -Version 13.0.1
         ```
@@ -63,7 +67,7 @@ You can include the SDK to your project using:
     - .NET  CLI
 
         ```sh
-        dotnet add package ZOHOCRMSDK-8.0 --version 1.0.0
+        dotnet add package ZOHOCRMSDK-8.0 --version 2.0.0
         dotnet add package Newtonsoft.Json --version 13.0.1
         dotnet add package MySql.Data --version 6.9.12
         ```
@@ -74,7 +78,7 @@ You can include the SDK to your project using:
 
         ```sh
         <ItemGroup>
-            <PackageReference Include="ZOHOCRMSDK-8.0" Version="1.0.0" />
+            <PackageReference Include="ZOHOCRMSDK-8.0" Version="2.0.0" />
             <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
             <PackageReference Include="MySql.Data" Version="6.9.12" />
         </ItemGroup>
@@ -94,4 +98,4 @@ For example, if you generate the tokens for your Sandbox environment in the CN d
 
 ---
 
-For more details, kindly refer [here](/versions/1.0.0/ZohoCRM/README.md).
+For more details, kindly refer [here](/versions/2.0.0/ZohoCRM/README.md).
