@@ -4,30 +4,32 @@ using System.IO;
 using System.Collections.Generic;
 using Com.Zoho.API.Authenticator;
 using Initializer = Com.Zoho.Crm.API.Initializer;
-using APIException = Com.Zoho.Crm.API.Attachments.APIException;
-using AttachmentsOperations = Com.Zoho.Crm.API.Attachments.AttachmentsOperations;
-using FileBodyWrapper = Com.Zoho.Crm.API.Attachments.FileBodyWrapper;
-using ResponseHandler = Com.Zoho.Crm.API.Attachments.ResponseHandler;
+using Com.Zoho.Crm.API;
+using APIException = Com.Zoho.Crm.API.BulkWrite.APIException;
+using BulkWriteOperations = Com.Zoho.Crm.API.BulkWrite.BulkWriteOperations;
+using ResponseHandler = Com.Zoho.Crm.API.BulkWrite.ResponseHandler;
+using FileBodyWrapper = Com.Zoho.Crm.API.BulkWrite.FileBodyWrapper;
 using Environment = Com.Zoho.Crm.API.Dc.DataCenter.Environment;
 using Com.Zoho.Crm.API.Util;
 using Com.Zoho.Crm.API.Dc;
 using Newtonsoft.Json;
 
 
-namespace Samples.Attachments
+namespace Samples.BulkWrite
 {
-    public class DownloadAttachment
+    public class DownloadBulkWriteResult
     {
-        public static void DownloadAttachment_1(string moduleAPIName, long recordId, long attachmentId, string destinationFolder)
+        public static void DownloadBulkWriteResult_1(string downloadUrl, string destinationFolder)
         {
-            AttachmentsOperations attachmentOperations = new AttachmentsOperations();
-            APIResponse<ResponseHandler> response = attachmentOperations.GetAttachment(attachmentId, recordId, moduleAPIName);
+            BulkWriteOperations bulkWriteOperations = new BulkWriteOperations();
+            APIResponse<ResponseHandler> response = bulkWriteOperations.DownloadBulkWriteResult(downloadUrl);
+
             if (response != null)
             {
-                Console.WriteLine("Status Code : " + response.StatusCode);
-                if (response.StatusCode == 204)
+                Console.WriteLine("Status Code: " + response.StatusCode);
+                if (new List<int>() { 204, 304 }.Contains(response.StatusCode))
                 {
-                    Console.WriteLine("No Content");
+                    Console.WriteLine(response.StatusCode == 204 ? "No Content" : "Not Modified");
                     return;
                 }
                 if (response.IsExpected)
@@ -78,6 +80,7 @@ namespace Samples.Attachments
                 }
             }
         }
+
         public static void Call()
         {
             try
@@ -85,11 +88,9 @@ namespace Samples.Attachments
                 Environment environment = INDataCenter.PRODUCTION;
                 IToken token = new OAuthToken.Builder().ClientId("Client_Id").ClientSecret("Client_Secret").RefreshToken("Refresh_Token").RedirectURL("Redirect_URL").Build();
                 new Initializer.Builder().Environment(environment).Token(token).Initialize();
-                string moduleAPIName = "Leads";
-                long recordId = 4402480774074l;
-                long attachmentId = 440248001286011l;
-                string destinationFolder = "./file";
-                DownloadAttachment_1(moduleAPIName, recordId, attachmentId, destinationFolder);
+                string downloadUrl = "https://download-accl.zoho.com/v2/aaaaaa/bulk-write/4402480774074/4402480774074.zip";
+                string destinationFolder = "./downloads";
+                DownloadBulkWriteResult_1(downloadUrl, destinationFolder);
             }
             catch (Exception e)
             {

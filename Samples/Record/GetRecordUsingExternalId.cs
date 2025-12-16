@@ -34,27 +34,45 @@ using System.Collections;
 
 namespace Samples.Record
 {
-	public class GetRecord
-	{
-		public static void GetRecord_1(string moduleAPIName, long recordId, string destinationFolder)
-		{
-			RecordOperations recordOperations = new RecordOperations(moduleAPIName);
-			ParameterMap paramInstance = new ParameterMap();
-			//List<string> fieldNames = new List<string>() { "Company", "Email" };
-			//paramInstance.Add(GetRecordParam.FIELDS, string.Join(",", fieldNames));
-			HeaderMap headerInstance = new HeaderMap();
-			//DateTimeOffset ifmodifiedsince = new DateTimeOffset(new DateTime(2020, 05, 15, 12, 0, 0, DateTimeKind.Local));
-			//headerInstance.Add(GetRecordHeader.IF_MODIFIED_SINCE, ifmodifiedsince);
-			//headerInstance.Add(GetRecordHeader.X_EXTERNAL, "Leads.External");
-			APIResponse<ResponseHandler> response = recordOperations.GetRecord(recordId, paramInstance, headerInstance);
-			if (response != null)
-			{
-				Console.WriteLine ("Status Code: " + response.StatusCode);
-				if (new List<int>(){ 204, 304}.Contains(response.StatusCode))
-				{
-					Console.WriteLine (response.StatusCode == 204 ? "No Content" : "Not Modified");
-					return;
-				}
+    public class GetRecordUsingExternalId
+    {
+        /// <summary>
+        /// This method is used to get a record using external ID
+        /// </summary>
+        /// <param name="moduleAPIName">The API name of the module</param>
+        /// <param name="externalFieldValue">The external field value</param>
+        public static void GetRecordUsingExternalId_1(string moduleAPIName, string externalFieldValue)
+        {
+            try
+            {
+                // Get instance of RecordOperations class
+                RecordOperations recordOperations = new RecordOperations(moduleAPIName);
+
+                // Get instance of ParameterMap class
+                ParameterMap paramInstance = new ParameterMap();
+
+                // Add parameters to get specific fields
+                paramInstance.Add(RecordOperations.GetRecordUsingExternalIDParam.FIELDS, "First_Name,Last_Name,Email,Phone");
+                paramInstance.Add(RecordOperations.GetRecordUsingExternalIDParam.APPROVED, "both");
+                paramInstance.Add(RecordOperations.GetRecordUsingExternalIDParam.CONVERTED, "both");
+
+                // Get instance of HeaderMap class
+                HeaderMap headerInstance = new HeaderMap();
+
+                // Add header to specify external field
+                headerInstance.Add(RecordOperations.GetRecordUsingExternalIDHeader.X_EXTERNAL, "External");
+
+                // Add If-Modified-Since header (optional)
+                headerInstance.Add(RecordOperations.GetRecordUsingExternalIDHeader.IF_MODIFIED_SINCE,
+                    new DateTimeOffset(2023, 01, 01, 0, 0, 0, TimeSpan.Zero));
+
+                // Call GetRecordUsingExternalId method
+                APIResponse<ResponseHandler> response = recordOperations.GetRecordUsingExternalId(externalFieldValue, paramInstance, headerInstance);
+
+                if (response != null)
+                {
+                    Console.WriteLine("Status Code: " + response.StatusCode);
+
 				if (response.IsExpected)
 				{
 					ResponseHandler responseHandler = response.Object;
@@ -339,17 +357,6 @@ namespace Samples.Record
 							}
 						}
 					}
-					else if (responseHandler is FileBodyWrapper)
-					{
-                        FileBodyWrapper fileBodyWrapper = (FileBodyWrapper)responseHandler;
-                        StreamWrapper streamWrapper = fileBodyWrapper.File;
-                        Stream file = streamWrapper.Stream;
-                        string fullFilePath = Path.Combine(destinationFolder, streamWrapper.Name);
-                        using (FileStream outputFileStream = new FileStream(fullFilePath, FileMode.Create))
-                        {
-                            file.CopyTo(outputFileStream);
-                        }
-                    }
 					else if (responseHandler is APIException)
 					{
 						APIException exception = (APIException) responseHandler;
@@ -363,43 +370,41 @@ namespace Samples.Record
 						Console.WriteLine ("Message: " + exception.Message.Value);
 					}
 				}
-				else
-				{
-                    Model responseObject = response.Model;
-                    Type type = responseObject.GetType();
-                    Console.WriteLine("Type is : {0}", type.Name);
-                    PropertyInfo[] props = type.GetProperties();
-                    Console.WriteLine("Properties (N = {0}) :", props.Length);
-                    foreach (var prop in props)
+                    else
                     {
-                        if (prop.GetIndexParameters().Length == 0)
-                        {
-                            Console.WriteLine("{0} ({1}) in {2}", prop.Name, prop.PropertyType.Name, prop.GetValue(responseObject));
-                        }
-                        else
-                        {
-                            Console.WriteLine("{0} ({1}) in <Indexed>", prop.Name, prop.PropertyType.Name);
-                        }
+                        Console.WriteLine("Response not as expected");
+                        Console.WriteLine(response.StatusCode);
                     }
-				}
-			}
-		}
-		public static void Call()
-		{
-			try
-			{
-				Environment environment = USDataCenter.PRODUCTION;
-				IToken token = new OAuthToken.Builder().ClientId("Client_Id").ClientSecret("Client_Secret").RefreshToken("Refresh_Token").RedirectURL("Redirect_URL" ).Build();
-				new Initializer.Builder().Environment(environment).Token(token).Initialize();
-				string moduleAPIName = "Leads";
-				long recordId = 44024000774074l;
-				string destinationFolder = "./file";
-                GetRecord_1(moduleAPIName, recordId, destinationFolder);
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine(JsonConvert.SerializeObject(e));
-			}
-		}
-	}
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }
+
+        public static void Call()
+        {
+            try
+            {
+                Environment environment = USDataCenter.PRODUCTION;
+                IToken token = new OAuthToken.Builder()
+                    .ClientId("Client_Id")
+                    .ClientSecret("Client_Secret")
+                    .RefreshToken("Refresh_Token")
+                    .Build();
+
+                new Initializer.Builder()
+                    .Environment(environment)
+                    .Token(token)
+                    .Initialize();
+
+                GetRecordUsingExternalId_1("Leads", "External123");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+        }
+    }
 }

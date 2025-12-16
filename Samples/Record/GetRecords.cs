@@ -40,24 +40,10 @@ namespace Samples.Record
 		{
 			RecordOperations recordOperations = new RecordOperations(moduleAPIName);
 			ParameterMap paramInstance = new ParameterMap();
-			paramInstance.Add (GetRecordsParam.APPROVED, "both");
-			paramInstance.Add(GetRecordsParam.CONVERTED, "both");
-			paramInstance.Add(GetRecordsParam.CVID, "3477061087501");
-			List<string> ids = new List<string>() { "3477148002" };
-			paramInstance.Add(GetRecordsParam.IDS, string.Join(",", ids));
-			paramInstance.Add (GetRecordsParam.UID, "34770615181008");
+			List<string> ids = new List<string>() { "1055806000023311049" };
+			//paramInstance.Add(GetRecordsParam.IDS, string.Join(",", ids));
 			List<string> fieldNames = new List<string>() { "Company", "Email" };
 			paramInstance.Add(GetRecordsParam.FIELDS, string.Join(",", fieldNames));
-			paramInstance.Add(GetRecordsParam.SORT_BY, "Email");
-			paramInstance.Add(GetRecordsParam.SORT_ORDER, "desc");
-			paramInstance.Add(GetRecordsParam.PAGE, 1);
-			paramInstance.Add(GetRecordsParam.PER_PAGE, 1);
-			DateTimeOffset startdatetime = new DateTimeOffset(new DateTime(2020, 05, 15, 12, 0, 0, DateTimeKind.Local));
-			paramInstance.Add(GetRecordsParam.STARTDATETIME, startdatetime);
-			DateTimeOffset enddatetime = new DateTimeOffset(new DateTime(2020, 05, 15, 12, 0, 0, DateTimeKind.Local));
-			paramInstance.Add(GetRecordsParam.ENDDATETIME, enddatetime);
-			paramInstance.Add(GetRecordsParam.TERRITORY_ID, "34770613051357");
-			paramInstance.Add(GetRecordsParam.INCLUDE_CHILD, "true");
 			HeaderMap headerInstance = new HeaderMap();
 			DateTimeOffset ifmodifiedsince = new DateTimeOffset(new DateTime(2020, 05, 15, 12, 0, 0, DateTimeKind.Local));
 			headerInstance.Add (GetRecordsHeader.IF_MODIFIED_SINCE, ifmodifiedsince);

@@ -28,7 +28,7 @@ namespace Samples.Attachments
             paramInstance.Add(GetAttachmentsParam.PAGE, 1);
             paramInstance.Add(GetAttachmentsParam.PER_PAGE, 10);
             paramInstance.Add(GetAttachmentsParam.FIELDS, "id");
-            paramInstance.Add(GetAttachmentsParam.IDS, "347706117069001");
+            paramInstance.Add(GetAttachmentsParam.IDS, "1055806000028580003");
             APIResponse<ResponseHandler> response = attachmentsOperations.GetAttachments(recordId, moduleAPIName, paramInstance);
             if (response != null)
             {
@@ -147,7 +147,7 @@ namespace Samples.Attachments
         {
             try
             {
-                Environment environment = USDataCenter.PRODUCTION;
+                Environment environment = INDataCenter.PRODUCTION;
                 IToken token = new OAuthToken.Builder().ClientId("Client_Id").ClientSecret("Client_Secret").RefreshToken("Refresh_Token").RedirectURL("Redirect_URL").Build();
                 new Initializer.Builder().Environment(environment).Token(token).Initialize();
                 string moduleAPIName = "Leads";

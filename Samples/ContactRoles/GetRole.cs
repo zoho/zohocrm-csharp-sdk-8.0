@@ -1,47 +1,50 @@
 ﻿using System;
 using System.Reflection;
-using System.IO;
 using System.Collections.Generic;
 using Com.Zoho.API.Authenticator;
 using Initializer = Com.Zoho.Crm.API.Initializer;
-using APIException = Com.Zoho.Crm.API.Attachments.APIException;
-using AttachmentsOperations = Com.Zoho.Crm.API.Attachments.AttachmentsOperations;
-using FileBodyWrapper = Com.Zoho.Crm.API.Attachments.FileBodyWrapper;
-using ResponseHandler = Com.Zoho.Crm.API.Attachments.ResponseHandler;
+using Com.Zoho.Crm.API;
+using APIException = Com.Zoho.Crm.API.ContactRoles.APIException;
+using ContactRolesOperations = Com.Zoho.Crm.API.ContactRoles.ContactRolesOperations;
+using ResponseHandler = Com.Zoho.Crm.API.ContactRoles.ResponseHandler;
+using ResponseWrapper = Com.Zoho.Crm.API.ContactRoles.ResponseWrapper;
+using ContactRole = Com.Zoho.Crm.API.ContactRoles.ContactRole;
 using Environment = Com.Zoho.Crm.API.Dc.DataCenter.Environment;
 using Com.Zoho.Crm.API.Util;
 using Com.Zoho.Crm.API.Dc;
 using Newtonsoft.Json;
 
 
-namespace Samples.Attachments
+namespace Samples.ContactRoles
 {
-    public class DownloadAttachment
+    public class GetRole
     {
-        public static void DownloadAttachment_1(string moduleAPIName, long recordId, long attachmentId, string destinationFolder)
+        public static void GetRole_1(long contactRoleId)
         {
-            AttachmentsOperations attachmentOperations = new AttachmentsOperations();
-            APIResponse<ResponseHandler> response = attachmentOperations.GetAttachment(attachmentId, recordId, moduleAPIName);
+            ContactRolesOperations contactRolesOperations = new ContactRolesOperations();
+            APIResponse<ResponseHandler> response = contactRolesOperations.GetRole(contactRoleId);
+
             if (response != null)
             {
-                Console.WriteLine("Status Code : " + response.StatusCode);
-                if (response.StatusCode == 204)
+                Console.WriteLine("Status Code: " + response.StatusCode);
+                if (new List<int>() { 204, 304 }.Contains(response.StatusCode))
                 {
-                    Console.WriteLine("No Content");
+                    Console.WriteLine(response.StatusCode == 204 ? "No Content" : "Not Modified");
                     return;
                 }
                 if (response.IsExpected)
                 {
                     ResponseHandler responseHandler = response.Object;
-                    if (responseHandler is FileBodyWrapper)
+                    if (responseHandler is ResponseWrapper)
                     {
-                        FileBodyWrapper fileBodyWrapper = (FileBodyWrapper)responseHandler;
-                        StreamWrapper streamWrapper = fileBodyWrapper.File;
-                        Stream file = streamWrapper.Stream;
-                        string fullFilePath = Path.Combine(destinationFolder, streamWrapper.Name);
-                        using (FileStream outputFileStream = new FileStream(fullFilePath, FileMode.Create))
+                        ResponseWrapper responseWrapper = (ResponseWrapper)responseHandler;
+                        List<ContactRole> contactRoles = responseWrapper.ContactRoles;
+
+                        foreach (ContactRole contactRole in contactRoles)
                         {
-                            file.CopyTo(outputFileStream);
+                            Console.WriteLine("Contact Role ID: " + contactRole.Id);
+                            Console.WriteLine("Contact Role Name: " + contactRole.Name);
+                            Console.WriteLine("Contact Role Sequence Number: " + contactRole.SequenceNumber);
                         }
                     }
                     else if (responseHandler is APIException)
@@ -78,6 +81,7 @@ namespace Samples.Attachments
                 }
             }
         }
+
         public static void Call()
         {
             try
@@ -85,11 +89,8 @@ namespace Samples.Attachments
                 Environment environment = INDataCenter.PRODUCTION;
                 IToken token = new OAuthToken.Builder().ClientId("Client_Id").ClientSecret("Client_Secret").RefreshToken("Refresh_Token").RedirectURL("Redirect_URL").Build();
                 new Initializer.Builder().Environment(environment).Token(token).Initialize();
-                string moduleAPIName = "Leads";
-                long recordId = 4402480774074l;
-                long attachmentId = 440248001286011l;
-                string destinationFolder = "./file";
-                DownloadAttachment_1(moduleAPIName, recordId, attachmentId, destinationFolder);
+                long contactRoleId = 3477061000004381001L;
+                GetRole_1(contactRoleId);
             }
             catch (Exception e)
             {
