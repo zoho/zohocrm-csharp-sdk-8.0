@@ -5,10 +5,6 @@ using Com.Zoho.Crm.API.Util;
 using MySql.Data.MySqlClient;
 using System.Text;
 using System;
-using Com.Zoho.API.Authenticator;
-using System.Xml.Linq;
-using System.Management.Instrumentation;
-using Newtonsoft.Json.Linq;
 
 namespace Com.Zoho.API.Authenticator.Store
 {
@@ -24,6 +20,8 @@ namespace Com.Zoho.API.Authenticator.Store
         private string databaseName;
         private string connectionString;
         private string tableName;
+        private string persistsecurityinfo;
+        private string sslMode;
 
         /// <summary>
         /// Creates an DBStore class instance with the specified parameters.
@@ -34,7 +32,7 @@ namespace Com.Zoho.API.Authenticator.Store
         /// <param name="userName">A string containing the DataBase user name. Default value root.</param>
         /// <param name="password">A string containing the DataBase password. Default value "".</param>
         /// <param name="portNumber">A string containing the DataBase port number. Default value 3306.</param>
-        private DBStore(string host, string databaseName, string tableName, string userName, string password, string portNumber)
+        private DBStore(string host, string databaseName, string tableName, string userName, string password, string portNumber, string persistsecurityinfo, string sslMode)
         {
             this.host = host;
             this.databaseName = databaseName;
@@ -42,7 +40,9 @@ namespace Com.Zoho.API.Authenticator.Store
             this.userName = userName;
             this.password = password;
             this.portNumber = portNumber;
-            this.connectionString = $"{Constants.SERVER}={this.host};{Constants.USERNAME}={this.userName};{Constants.PASSWORD}={this.password};{Constants.DATABASE}={this.databaseName};{Constants.PORT}={this.portNumber};persistsecurityinfo=True;SslMode=none;";
+            this.persistsecurityinfo = persistsecurityinfo;
+            this.sslMode = sslMode;
+            this.connectionString = $"{Constants.SERVER}={this.host};{Constants.USERNAME}={this.userName};{Constants.PASSWORD}={this.password};{Constants.DATABASE}={this.databaseName};{Constants.PORT}={this.portNumber};persistsecurityinfo={this.persistsecurityinfo};SslMode={this.sslMode};";
         }
 
         public IToken FindToken(IToken token)
@@ -465,6 +465,8 @@ namespace Com.Zoho.API.Authenticator.Store
             private string host = Constants.MYSQL_HOST;
             private string databaseName = Constants.MYSQL_DATABASE_NAME;
             private string tableName = Constants.MYSQL_TABLE_NAME;
+            private string persistsecurityinfo = "True";
+            private string sslMode = "Disabled";
 
             public Builder UserName(string userName)
             {
@@ -503,9 +505,22 @@ namespace Com.Zoho.API.Authenticator.Store
                 return this;
             }
 
+            public Builder Persistsecurityinfo(string persistsecurityinfo)
+            {
+                this.persistsecurityinfo = persistsecurityinfo;
+
+                return this;
+            }
+
+            public Builder SSLMode(string sslMode)
+            {
+                this.sslMode = sslMode;
+                return this;
+            }
+
             public DBStore Build()
             {
-                return new DBStore(this.host, this.databaseName, this.tableName, this.userName, this.password, this.portNumber);
+                return new DBStore(this.host, this.databaseName, this.tableName, this.userName, this.password, this.portNumber, this.persistsecurityinfo, this.sslMode);
             }
         }
     }
