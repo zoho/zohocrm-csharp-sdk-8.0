@@ -19,7 +19,7 @@ namespace Samples.ContactRoles
 {
     public class GetRoles
     {
-        public static void GetRoles_1()
+        public static void GetContactRoles()
         {
             ContactRolesOperations contactRolesOperations = new ContactRolesOperations();
             APIResponse<ResponseHandler> response = contactRolesOperations.GetRoles();
@@ -89,7 +89,7 @@ namespace Samples.ContactRoles
                 Environment environment = INDataCenter.PRODUCTION;
                 IToken token = new OAuthToken.Builder().ClientId("Client_Id").ClientSecret("Client_Secret").RefreshToken("Refresh_Token").RedirectURL("Redirect_URL").Build();
                 new Initializer.Builder().Environment(environment).Token(token).Initialize();
-                GetRoles_1();
+                GetContactRoles();
             }
             catch (Exception e)
             {
