@@ -17,7 +17,6 @@ namespace Samples.RelatedRecords
             try
             {
                 RelatedRecordsOperations relatedRecordsOperations = new RelatedRecordsOperations(relatedListAPIName, moduleAPIName);
-                ParameterMap paramInstance = new ParameterMap();
                 HeaderMap headerInstance = new HeaderMap();
                 APIResponse<ActionHandler> response = relatedRecordsOperations.DelinkRecord(relatedRecordId, recordId, headerInstance);
 
