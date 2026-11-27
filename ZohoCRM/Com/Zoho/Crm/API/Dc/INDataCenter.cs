@@ -35,7 +35,7 @@ namespace Com.Zoho.Crm.API.Dc
 
         public override string GetFileUploadUrl()
         {
-            return "https://content.zohoapis.in";
+            return "https://upload-accl.zoho.in";
         }
     }
 }

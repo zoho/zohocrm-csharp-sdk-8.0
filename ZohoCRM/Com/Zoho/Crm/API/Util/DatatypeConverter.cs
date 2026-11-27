@@ -29,12 +29,32 @@ namespace Com.Zoho.Crm.API.Util
 		/// <summary>
 		/// This method is to initialize the PreConverter and PostConverter lambda functions.
 		/// </summary>
+		private static readonly object INIT_LOCK = new object();
+		private static volatile bool initialized;
+
+		/// <summary>
+		/// Thread-safe, one-time population of the converter maps. Once populated the maps are only read,
+		/// which is safe for concurrent access.
+		/// </summary>
 		private static void Init()
 		{
-			if (PRE_CONVERTER_MAP.Count > 0 && POST_CONVERTER_MAP.Count > 0)
+			if (initialized)
 			{
 				return;
 			}
+			lock (INIT_LOCK)
+			{
+				if (initialized)
+				{
+					return;
+				}
+				Populate();
+				initialized = true;
+			}
+		}
+
+		private static void Populate()
+		{
 			AddToDictionary(typeof(TimeSpan).FullName,
 			(obj) =>
 			{

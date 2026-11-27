@@ -25,6 +25,10 @@ License
 
 ## Latest Version
 
+- [5.0.0](/versions/5.0.0/README.md)
+    - The file upload URLs of the US, EU, IN, AU, JP, and CN data centers have been updated.
+    - Fixed a thread-safety issue in DataTypeConverter that caused concurrent requests to fail while the converter maps were being initialized.
+
 - [4.0.0](/versions/4.0.0/README.md)
     - Updated dependencies to their latest versions.
     - Handled SDK utils.
@@ -88,7 +92,7 @@ You can include the SDK to your project using:
     - Package Manager
 
         ```sh
-        Install-Package ZOHOCRMSDK-8.0 -Version 4.0.0
+        Install-Package ZOHOCRMSDK-8.0 -Version 5.0.0
         Install-Package MySql.Data -Version 9.5.0
         Install-Package Newtonsoft.Json -Version 13.0.1
         ```
@@ -96,7 +100,7 @@ You can include the SDK to your project using:
     - .NET  CLI
 
         ```sh
-        dotnet add package ZOHOCRMSDK-8.0 --version 4.0.0
+        dotnet add package ZOHOCRMSDK-8.0 --version 5.0.0
         dotnet add package Newtonsoft.Json --version 13.0.1
         dotnet add package MySql.Data --version 9.5.0
         ```
@@ -107,7 +111,7 @@ You can include the SDK to your project using:
 
         ```sh
         <ItemGroup>
-            <PackageReference Include="ZOHOCRMSDK-8.0" Version="4.0.0" />
+            <PackageReference Include="ZOHOCRMSDK-8.0" Version="5.0.0" />
             <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
             <PackageReference Include="MySql.Data" Version="9.5.0" />
         </ItemGroup>
@@ -127,4 +131,4 @@ For example, if you generate the tokens for your Sandbox environment in the CN d
 
 ---
 
-For more details, kindly refer [here](/versions/4.0.0/ZohoCRM/README.md).
+For more details, kindly refer [here](/versions/5.0.0/ZohoCRM/README.md).
