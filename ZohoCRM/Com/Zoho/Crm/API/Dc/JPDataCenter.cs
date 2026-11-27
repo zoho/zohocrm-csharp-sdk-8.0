@@ -35,7 +35,7 @@ namespace Com.Zoho.Crm.API.Dc
 
         public override string GetFileUploadUrl()
         {
-            return "https://content.zohoapis.jp";
+            return "https://upload.zoho.jp";
         }
     }
 }
